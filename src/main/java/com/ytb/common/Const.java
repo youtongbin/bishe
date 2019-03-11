@@ -24,7 +24,35 @@ public class Const {
             this.code = code;
             this.msg = msg;
         }
-
     }
+
+    @Getter
+    public enum PowerEnum{
+
+        MANAGER(0,"管理员"),
+        SPECIALIST(1,"专家老师"),
+        COMMON(2,"普通用户"),
+        ;
+
+        private Integer code;
+
+        private String msg;
+
+        PowerEnum(Integer code,String msg){
+            this.code = code;
+            this.msg = msg;
+        }
+
+        public static PowerEnum codeOf(Integer code){
+            for (PowerEnum p:values()
+                 ) {
+                if (p.code == code){
+                    return p;
+                }
+            }
+            return null;
+        }
+    }
+
 
 }

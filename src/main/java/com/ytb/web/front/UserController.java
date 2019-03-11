@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @ResponseBody
@@ -18,33 +19,59 @@ public class UserController {
     @Resource
     private IUserService userService;
 
+    /**
+     * 注册
+     * @param user
+     * @return
+     */
     @RequestMapping("/register.do")
     public ServerResponse register(User user){
+        return userService.register(user);
+    }
 
-        if (user.getUsername() == null || user.getUsername().matches("[ ]*")){
-            return ServerResponse.serverResponseByFail("用户名不能为空");
+    /**
+     * 登录
+     * @param session
+     * @param username
+     * @param password
+     * @return
+     */
+    @RequestMapping("/login.do")
+    public ServerResponse login(HttpSession session, String username, String password){
+        ServerResponse serverResponse = userService.login(username,password);
+        if (serverResponse.isSuccess()){
+            session.setAttribute(Const.CURRENT_USER,(User)serverResponse.getData());
         }
-        if (user.getPassword() == null || user.getPassword().matches("[ ]*")){
-            return ServerResponse.serverResponseByFail("密码不能为空");
-        }
-        if (user.getPhone() == null || user.getPhone().matches("[ ]*")){
-            return ServerResponse.serverResponseByFail("手机号不能为空");
-        }
-        if (user.getEmail() == null || user.getEmail().matches("[ ]*")){
-            return ServerResponse.serverResponseByFail("邮箱不能为空");
+        return serverResponse;
+    }
+
+    /**
+     * 退出
+     * @param session
+     * @return
+     */
+    @RequestMapping("/logout.do")
+    public ServerResponse logout(HttpSession session){
+        session.invalidate();
+        return ServerResponse.serverResponseBySuccess(null,"退出成功");
+    }
+
+    /**
+     * 修改个人信息
+     * @param session
+     * @param user
+     * @return
+     */
+    @RequestMapping("/update.do")
+    public ServerResponse update(HttpSession session,User user){
+
+        User user1 =  (User)session.getAttribute(Const.CURRENT_USER);
+        if (user1 == null){
+            return ServerResponse.serverResponseByFail(Const.CommonEnum.NEED_LOGIN.getMsg());
         }
 
-        if (userService.checkUsername(user.getUsername()) > 0){
-            return ServerResponse.serverResponseByFail(1,"用户名已存在");
-        }
-
-        int result = userService.insert(user);
-        if (result > 0){
-            return ServerResponse.serverResponseBySuccess(null,"注册成功");
-        }
-
-        return ServerResponse.serverResponseByFail("注册失败");
-
+        user.setUserId(user1.getUserId());
+        return userService.update(user);
     }
 
 }

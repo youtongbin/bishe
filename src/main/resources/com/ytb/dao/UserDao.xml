@@ -16,7 +16,7 @@
     </resultMap>
 
 
-    <insert id="insert" parameterType="User">
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyColumn="userId" keyProperty="userId">
 
         insert into user (username, password, phone, email, role, create_time, update_time) values
         <if test="role==null">
@@ -37,5 +37,49 @@
 
         select count(1) from user where username=#{username}
     </select>
+
+    <select id="selectByUsernameAndPassword" parameterType="map" resultMap="BaseResultMap">
+
+        select userId,username,password,phone,email,role,create_time,update_time from user
+        where username=#{username}  and password=#{password}
+    </select>
+
+
+    <update id="update" parameterType="User">
+
+        update user set
+        <if test="username!=null and username!=''">
+            username=#{username},
+        </if>
+        <if test="password!=null and password!=''">
+            password=#{password},
+        </if>
+        <if test="phone!=null and phone!=''">
+            phone=#{phone},
+        </if>
+        <if test="email!=null and email!=''">
+            email=#{email},
+        </if>
+        update_time=now()
+
+        where userId=#{userId}
+    </update>
+
+    <update id="makePower" parameterType="map">
+
+        update user set
+        <if test="role!=null and role!=''">
+            role=#{role},
+        </if>
+        update_time=now()
+        where userId=#{userId}
+    </update>
+
+
+
+    <delete id="delete" parameterType="int">
+
+        delete from user where userId=#{userId}
+    </delete>
 
 </mapper>
