@@ -6,6 +6,25 @@ public class Const {
 
     public static final String CURRENT_USER = "current_user";
 
+
+    @Getter
+    public enum ApplyStatusEnum{
+
+        SUCCESS(0,"已通过"),
+        FAIL(1,"未通过"),
+        UN_HANDLE(2,"待审批"),
+        ;
+
+        private int code;
+
+        private String msg;
+
+        ApplyStatusEnum(int code,String msg){
+            this.code = code;
+            this.msg = msg;
+        }
+    }
+
     @Getter
     public enum CommonEnum{
 

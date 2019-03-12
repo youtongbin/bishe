@@ -21,10 +21,10 @@ public interface IUserManageService {
 
     /**
      * 授权
-     * @param userId
+     * @param applyId
      * @param role
      * @return
      */
-    ServerResponse makePower(Integer userId,Integer role);
+    ServerResponse makePower(Integer applyId,Integer role);
 
 }

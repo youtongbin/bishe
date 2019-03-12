@@ -12,4 +12,33 @@
         <result column="update_time" property="updateTime"/>
     </resultMap>
 
+    <select id="selectByKey" parameterType="int" resultMap="BaseResultMap">
+
+        select applyId,userId,apply_status,create_time,update_time from apply where applyId=#{applyId}
+    </select>
+
+    <select id="selectAllByUserId" parameterType="int" resultMap="BaseResultMap">
+
+        select applyId,userId,apply_status,create_time,update_time from apply where userId=#{userId}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+
+        select applyId,userId,apply_status,create_time,update_time from apply
+    </select>
+
+
+    <insert id="insert" parameterType="Apply" useGeneratedKeys="true" keyColumn="applyId" keyProperty="applyId">
+
+        insert into apply(userId, apply_status, create_time, update_time) values
+        (#{userId},#{applyStatus},now(),now())
+    </insert>
+
+    <update id="updateStatus" parameterType="Apply">
+
+        update apply set
+        apply_status=#{applyStatus},update_time=now()
+        where applyId=#{applyId}
+    </update>
+
 </mapper>

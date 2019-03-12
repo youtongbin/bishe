@@ -61,12 +61,10 @@ public class UserManageController {
     /**
      * 授权
      * @param session
-     * @param userId
-     * @param role
      * @return
      */
     @RequestMapping("/make_power.do")
-    public ServerResponse makePower(HttpSession session, Integer userId,Integer role){
+    public ServerResponse makePower(HttpSession session, Integer applyId){
         User user1 = (User)session.getAttribute(Const.CURRENT_USER);
         if (user1 == null){
             return ServerResponse.serverResponseByFail(Const.CommonEnum.NEED_LOGIN.getMsg());
@@ -76,7 +74,7 @@ public class UserManageController {
             return ServerResponse.serverResponseByFail(1,"权限不足");
         }
 
-        return userManageService.makePower(userId,role);
+        return userManageService.makePower(applyId,Const.PowerEnum.SPECIALIST.getCode());
     }
 
 

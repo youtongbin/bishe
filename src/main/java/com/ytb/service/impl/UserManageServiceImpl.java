@@ -2,10 +2,13 @@ package com.ytb.service.impl;
 
 import com.ytb.common.Const;
 import com.ytb.common.ServerResponse;
+import com.ytb.dao.ApplyDao;
 import com.ytb.dao.UserDao;
+import com.ytb.pojo.Apply;
 import com.ytb.pojo.User;
 import com.ytb.service.IUserManageService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -14,6 +17,9 @@ public class UserManageServiceImpl implements IUserManageService {
 
     @Resource
     private UserDao userDao;
+
+    @Resource
+    private ApplyDao applyDao;
 
     @Override
     public ServerResponse addUser(User user) {
@@ -61,13 +67,25 @@ public class UserManageServiceImpl implements IUserManageService {
     }
 
     @Override
-    public ServerResponse makePower(Integer userId, Integer role) {
+    @Transactional
+    public ServerResponse makePower(Integer applyId, Integer role) {
 
-        int result = userDao.makePower(userId,role);
-        if (result > 0){
-            return ServerResponse.serverResponseBySuccess(Const.PowerEnum.codeOf(role).getMsg(),"授权成功");
+        Apply apply = applyDao.selectByKey(applyId);
+        if (apply == null){
+            return ServerResponse.serverResponseByFail("该申请不存在");
         }
 
-        return ServerResponse.serverResponseByFail(1,"授权失败");
+        if (apply.getApplyStatus() != Const.ApplyStatusEnum.SUCCESS.getCode()){
+            int result = userDao.makePower(apply.getUserId(),role);
+            if (result > 0){
+                apply.setApplyStatus(Const.ApplyStatusEnum.SUCCESS.getCode());
+                applyDao.updateStatus(apply);
+                return ServerResponse.serverResponseBySuccess(Const.PowerEnum.codeOf(role).getMsg(),"授权成功");
+            }
+            apply.setApplyStatus(Const.ApplyStatusEnum.FAIL.getCode());
+            applyDao.updateStatus(apply);
+            return ServerResponse.serverResponseByFail(1,"授权失败");
+        }
+        return ServerResponse.serverResponseByFail("已通过，无需修改");
     }
 }
