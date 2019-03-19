@@ -6,6 +6,65 @@ public class Const {
 
     public static final String CURRENT_USER = "current_user";
 
+    public static final String TEMP_KEEP = "D:/upload_test";
+
+
+    @Getter
+    public enum ReadStatusEnum{
+
+        SUCCESS(0,"已通过"),
+        FAIL(1,"未通过"),
+        ;
+
+        private int code;
+
+        private String msg;
+
+        ReadStatusEnum(int code,String msg){
+            this.code = code;
+            this.msg = msg;
+        }
+
+        public static ReadStatusEnum codeOf(Integer code){
+            for (ReadStatusEnum r:values()
+            ) {
+                if (r.code == code){
+                    return r;
+                }
+            }
+            return null;
+        }
+    }
+
+
+    @Getter
+    public enum PaperStatusEnum{
+
+        SUCCESS(0,"已通过"),
+        FAIL(1,"未通过"),
+        UN_HANDLE(2,"待审核"),
+        ;
+
+        private int code;
+
+        private String msg;
+
+        PaperStatusEnum(int code,String msg){
+            this.code = code;
+            this.msg = msg;
+        }
+
+        public static PaperStatusEnum codeOf(Integer code){
+            for (PaperStatusEnum p:values()
+                 ) {
+                if (p.code == code){
+                    return p;
+                }
+            }
+            return null;
+        }
+    }
+
 
     @Getter
     public enum ApplyStatusEnum{

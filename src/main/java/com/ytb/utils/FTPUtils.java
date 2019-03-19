@@ -37,7 +37,9 @@ public class FTPUtils {
 
         System.out.println("开始连接FTP服务器...");
 
-        ftpUtil.uploadFile("img",fileList);
+        if (ftpUtil.uploadFile("files",fileList)){
+            return true;
+        }
 
         return false;
     }
@@ -71,7 +73,6 @@ public class FTPUtils {
                 fileInputStream.close();
                 ftpClient.disconnect();
             }
-
 
         }
         return  false;

@@ -73,7 +73,7 @@
             display: inline-block;
             margin-left: 61px;
         }
-        #userPassword{
+        #password{
             height: 35px;
             width: 290px;
             border: 2px solid #ccc;
@@ -116,7 +116,7 @@
         <div class="xiao-title-box">
             <span>账户登录</span>
         </div>
-        <form action="#" method="post">
+        <form id="login_fm">
             <div class="xiao-username-box">
                 <span class="xiao-require">*</span>
                 <label for="username">用户名</label>
@@ -127,14 +127,14 @@
 
             <div class="xiao-userPassword-box">
                 <span class="xiao-require">*</span>
-                <label for="userPassword">密码</label>
+                <label for="password">密码</label>
                 <div class="xiao-userPassword-input">
-                    <input type="password" id="userPassword" name="userPassword" placeholder="请输入密码 长度:6-12个字符" />
+                    <input type="password" id="password" name="password" placeholder="请输入密码 长度:6-12个字符" />
                 </div>
             </div>
 
             <div class="xiao-submit-box">
-                <input id = "xiao-submit-button" type="submit" value="登录">
+                <input id = "xiao-submit-button" type="button" value="登录">
             </div>
 
             <div class="xiao-goLogin-box">
@@ -143,5 +143,32 @@
         </form>
     </div>
 </div>
+
+
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.serializejson.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#xiao-submit-button").click(function () {
+            var loginInfo = $("#login_fm").serializeJSON()
+
+            $.ajax({
+                url:"user/login.do",
+                type:"post",
+                contentType:"application/json",
+                data: JSON.stringify(loginInfo),
+                success:function (result) {
+                    console.log(result)
+                    if (result.code=="0"){
+                        window.location.href="home.do"
+                    }else {
+                        alert(result.msg)
+                    }
+                }
+            })
+        })
+    })
+</script>
+
 </body>
 </html>

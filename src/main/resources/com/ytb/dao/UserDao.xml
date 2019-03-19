@@ -18,7 +18,7 @@
 
     <insert id="insert" parameterType="User" useGeneratedKeys="true" keyColumn="userId" keyProperty="userId">
 
-        insert into user (username, password, phone, email, role, create_time, update_time) values
+        insert into user_tb (username, password, phone, email, role, create_time, update_time) values
         <if test="role==null">
             (#{username},#{password},#{phone},#{email},2,now(),now())
         </if>
@@ -29,25 +29,25 @@
 
     <select id="selectByUsername" parameterType="string" resultMap="BaseResultMap">
 
-        select userId,username,password,phone,email,role,create_time,update_time from user
+        select userId,username,password,phone,email,role,create_time,update_time from user_tb
         where username=#{username}
     </select>
 
     <select id="checkUsername" parameterType="string" resultType="int">
 
-        select count(1) from user where username=#{username}
+        select count(1) from user_tb where username=#{username}
     </select>
 
     <select id="selectByUsernameAndPassword" parameterType="map" resultMap="BaseResultMap">
 
-        select userId,username,password,phone,email,role,create_time,update_time from user
+        select userId,username,password,phone,email,role,create_time,update_time from user_tb
         where username=#{username}  and password=#{password}
     </select>
 
 
     <update id="update" parameterType="User">
 
-        update user set
+        update user_tb set
         <if test="username!=null and username!=''">
             username=#{username},
         </if>
@@ -67,7 +67,7 @@
 
     <update id="makePower" parameterType="map">
 
-        update user set
+        update user_tb set
         <if test="role!=null and role!=''">
             role=#{role},
         </if>
@@ -79,7 +79,7 @@
 
     <delete id="delete" parameterType="int">
 
-        delete from user where userId=#{userId}
+        delete from user_tb where userId=#{userId}
     </delete>
 
 </mapper>

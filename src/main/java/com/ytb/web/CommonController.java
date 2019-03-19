@@ -16,4 +16,13 @@ public class CommonController {
         return "register";
     }
 
+    @RequestMapping("/upload.do")
+    public String upload(){
+        return "upload";
+    }
+
+    @RequestMapping("/home.do")
+    public String home(){
+        return "home";
+    }
 }

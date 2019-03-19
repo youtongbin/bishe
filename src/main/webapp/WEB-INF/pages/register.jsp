@@ -233,69 +233,47 @@
 
     $(function(){
 
-        /*$("#register_fm input").change(function () {
-            check_fm()
-        })
-
-        function check_fm(){
-
-            var username = $("#username").val().toString()
-            if (username.length < 6 || username.length > 12){
-                alert("用户名格式不正确！请重新输入");
-                $("#username").focus()
-                $("#xiao-submit-button").attr("disabled",true)
-            }
-            var password = $("#password").val().toString()
-            if (password.length < 6 || password.length > 12){
-                alert("密码格式不正确！请重新输入");
-                $("#password").focus()
-                $("#xiao-submit-button").attr("disabled",true)
-            }
-            var repassword = $("#userRePassword").val().toString()
-            if (repassword != password){
-                alert("密码验证错误");
-                $("#userRePassword").focus()
-                $("#xiao-submit-button").attr("disabled",true)
-            }
-            var phone = $("#phone").val()
-            if (!isPhoneNo(phone)){
-                alert("手机格式不正确！请重新输入");
-                $("#phone").focus()
-                $("#xiao-submit-button").attr("disabled",true)
-            }
-            var email=$("#userEmail").val();
-            if(!email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/))
-            {
-                alert("邮箱格式不正确！请重新输入");
-                $("#userEmail").focus();
-                $("#xiao-submit-button").attr("disabled",true)
-            }
-
-        }
-
-        // 验证手机号
-        function isPhoneNo(phone) {
-            var pattern = /^1[34578]\d{9}$/;
-            return pattern.test(phone)
-        }*/
-
-
-
         $("#xiao-submit-button").click(function () {
-            var jsonObj = $("#register_fm").serializeJSON
-            alert(JSON.stringify(jsonObj))
-            $.ajax({
-                type:"post",
-                url:"user/register.do",
-                contentType: "application/json",
-                data:JSON.stringify(jsonObj),
-                success:function (result) {
-                    alert(result.msg)
-                    if (result.code == 0){
-                        window.location.href="register"
+            var jsonObj = $("#register_fm").serializeJSON()
+            var username_len = $("#username").val().toString().length
+            var password = $("#password").val().toString()
+            var rePassword = $("#userRePassword").val().toString()
+            var phone = $("#phone").val().toString()
+            var email = $("#email").val().toString()
+            
+            if (username_len >= 6 && username_len <= 12){
+                if (password.length >= 6 && password.length <= 12){
+                    if (password==rePassword){
+                        if(/^1[34578]\d{9}$/.test(phone)){
+                            if (/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(email)){
+                                $.ajax({
+                                    type:"post",
+                                    url:"user/register.do",
+                                    contentType: "application/json",
+                                    data:JSON.stringify(jsonObj),
+                                    success:function (result) {
+                                        alert(result.msg)
+                                        if (result.code == 0){
+                                            window.location.href="login.do"
+                                        }
+                                    }
+                                })
+                            } else {
+                                alert("邮箱格式输入错误")
+                            }
+                        }else {
+                            alert("手机号码有误，请重填")
+                        }
+                    } else {
+                        alert("密码验证错误")
                     }
+                } else {
+                    alert("密码输入错误")
                 }
-            })
+            }else {
+                alert("用户名输入错误")
+            }
+
         })
 
     })

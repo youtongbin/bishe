@@ -23,11 +23,28 @@
 
     <mvc:annotation-driven/>
 
-    <context:component-scan base-package="com.ytb.web"></context:component-scan>
+    <context:component-scan base-package="com.ytb.web"/>
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
         <property name="prefix" value="WEB-INF/pages/"></property>
         <property name="suffix" value=".jsp"></property>
     </bean>
+
+    <bean name="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"/>
+        <property name="maxUploadSize" value="50000000"/>
+        <property name="maxInMemorySize" value="4096"/>
+    </bean>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**/*.do"/>
+            <mvc:exclude-mapping path="/login.do"/>
+            <mvc:exclude-mapping path="/register.do"/>
+            <mvc:exclude-mapping path="/user/login.do"/>
+            <mvc:exclude-mapping path="/user/register.do"/>
+            <bean class="com.ytb.common.HandleFilter"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
 </beans>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ytb.dao.ReadDao">
+
+    <resultMap id="BaseResultMap" type="com.ytb.pojo.Read">
+
+        <id column="readId" property="readId"/>
+        <result column="paperId" property="paperId"/>
+        <result column="userId" property="userId"/>
+        <result column="read_view" property="readView"/>
+        <result column="read_status" property="readStatus"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="Read" useGeneratedKeys="true" keyColumn="readId" keyProperty="readId">
+
+        insert into read_tb (paperId, userId, read_view, read_status, create_time, update_time)
+        values (#{paperId},#{userId},#{readView},#{readStatus},now(),now())
+    </insert>
+
+    <select id="selectByKey" parameterType="int" resultMap="BaseResultMap">
+
+        select readId,paperId,userId,read_view,read_status,create_time,update_time from read_tb where readId=#{readId}
+    </select>
+
+    <select id="selectAllByPaperId" parameterType="int" resultMap="BaseResultMap">
+
+        select readId,paperId,userId,read_view,read_status,create_time,update_time from read_tb where paperId=#{paperId}
+    </select>
+    
+    <update id="update" parameterType="Read">
+        
+        update read_tb set
+        <if test="readView!=null">
+            read_view=#{readView},
+        </if>
+        <if test="readStatus!=null">
+            read_status=#{readStatus},
+        </if>
+        update_time=now()
+        where readId=#{readId}
+    </update>
+
+</mapper>

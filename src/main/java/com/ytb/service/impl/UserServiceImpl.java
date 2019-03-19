@@ -46,10 +46,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public ServerResponse login(String username, String password) {
 
-        if (username == null){
+        if (username == null || username.matches("[ ]*")){
             return ServerResponse.serverResponseByFail("用户名不能为空");
         }
-        if (password == null){
+        if (password == null || password.matches("[ ]*")){
             return ServerResponse.serverResponseByFail("密码不能为空");
         }
 

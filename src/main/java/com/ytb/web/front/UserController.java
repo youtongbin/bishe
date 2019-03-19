@@ -5,7 +5,9 @@ import com.ytb.common.ServerResponse;
 import com.ytb.pojo.User;
 import com.ytb.service.IUserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -25,20 +27,24 @@ public class UserController {
      * @return
      */
     @RequestMapping("/register.do")
-    public ServerResponse register(User user){
+    public ServerResponse register(@RequestBody User user){
         return userService.register(user);
     }
 
     /**
      * 登录
      * @param session
-     * @param username
-     * @param password
      * @return
      */
     @RequestMapping("/login.do")
-    public ServerResponse login(HttpSession session, String username, String password){
-        ServerResponse serverResponse = userService.login(username,password);
+    public ServerResponse login(HttpSession session,
+                                @RequestBody User user){
+
+        if (user == null){
+            return ServerResponse.serverResponseByFail(Const.CommonEnum.INPUT_NULL.getMsg());
+        }
+
+        ServerResponse serverResponse = userService.login(user.getUsername(),user.getPassword());
         if (serverResponse.isSuccess()){
             session.setAttribute(Const.CURRENT_USER,(User)serverResponse.getData());
         }

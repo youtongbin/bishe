@@ -14,29 +14,29 @@
 
     <select id="selectByKey" parameterType="int" resultMap="BaseResultMap">
 
-        select applyId,userId,apply_status,create_time,update_time from apply where applyId=#{applyId}
+        select applyId,userId,apply_status,create_time,update_time from apply_tb where applyId=#{applyId}
     </select>
 
     <select id="selectAllByUserId" parameterType="int" resultMap="BaseResultMap">
 
-        select applyId,userId,apply_status,create_time,update_time from apply where userId=#{userId}
+        select applyId,userId,apply_status,create_time,update_time from apply_tb where userId=#{userId}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
 
-        select applyId,userId,apply_status,create_time,update_time from apply
+        select applyId,userId,apply_status,create_time,update_time from apply_tb
     </select>
 
 
     <insert id="insert" parameterType="Apply" useGeneratedKeys="true" keyColumn="applyId" keyProperty="applyId">
 
-        insert into apply(userId, apply_status, create_time, update_time) values
+        insert into apply_tb(userId, apply_status, create_time, update_time) values
         (#{userId},#{applyStatus},now(),now())
     </insert>
 
     <update id="updateStatus" parameterType="Apply">
 
-        update apply set
+        update apply_tb set
         apply_status=#{applyStatus},update_time=now()
         where applyId=#{applyId}
     </update>

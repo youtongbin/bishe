@@ -10,7 +10,7 @@ public class PropertiesUtils {
 
     static {
 
-        InputStream inputStream =Thread.currentThread().getContextClassLoader().getResourceAsStream("application.properties");
+        InputStream inputStream =Thread.currentThread().getContextClassLoader().getResourceAsStream("dt.properties");
 
         try {
             properties.load(inputStream);

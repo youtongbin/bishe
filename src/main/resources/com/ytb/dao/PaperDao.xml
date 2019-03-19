@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ytb.dao.PaperDao">
+
+    <resultMap id="BaseResultMap" type="com.ytb.pojo.Paper">
+
+        <id column="paperId" property="paperId"/>
+        <result column="userId" property="userId"/>
+        <result column="identifying_name" property="identifyingName"/>
+        <result column="paper_name" property="paperName"/>
+        <result column="paper_desc" property="paperDesc"/>
+        <result column="paper_status" property="paperStatus"/>
+        <result column="paper_url" property="paperUrl"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+
+    <insert id="insert" parameterType="Paper" useGeneratedKeys="true" keyColumn="paperId" keyProperty="paperId">
+
+        insert into paper_tb (userId, identifying_name, paper_name, paper_desc, paper_status, paper_url, create_time, update_time)
+        values (#{userId},#{identifyingName},#{paperName},#{paperDesc},#{paperStatus},#{paperUrl},now(),now())
+    </insert>
+
+    <select id="selectByUserId" parameterType="int" resultMap="BaseResultMap">
+
+        select paperId,userId,identifying_name,paper_name,paper_desc,paper_status,paper_url,create_time,update_time
+        from paper_tb where userId=#{userId}
+    </select>
+
+    <select id="selectByPaperId" parameterType="int" resultMap="BaseResultMap">
+
+        select paperId,userId,identifying_name,paper_name,paper_desc,paper_status,paper_url,create_time,update_time
+        from paper_tb where paperId=#{paperId}
+    </select>
+
+    <update id="update" parameterType="Paper">
+
+        update paper_tb set
+        <if test="identifyingName!=null">
+            identifying_name=#{identifyingName},
+        </if>
+        <if test="paperName!=null">
+            paper_name=#{paperName},
+        </if>
+        <if test="paperDesc!=null">
+            paper_desc=#{paperDesc},
+        </if>
+        <if test="paperStatus!=null">
+            paper_status=#{paperStatus},
+        </if>
+        <if test="paperUrl!=null">
+            paper_url=#{paperUrl},
+        </if>
+        update_time=now()
+        where paperId=#{paperId}
+    </update>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+
+        select paperId,userId,identifying_name,paper_name,paper_desc,paper_status,paper_url,create_time,update_time
+        from paper_tb
+    </select>
+
+    <delete id="delete" parameterType="int">
+
+        delete from paper_tb where paperId=#{paperId}
+    </delete>
+
+    <delete id="deleteByKeyAndUserId" parameterType="map">
+
+        delete from paper_tb where paperId=#{paperId} and userId=#{userId}
+    </delete>
+
+</mapper>
