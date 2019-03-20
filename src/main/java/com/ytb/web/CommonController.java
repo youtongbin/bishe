@@ -25,4 +25,9 @@ public class CommonController {
     public String home(){
         return "home";
     }
+
+    @RequestMapping("/update_user.do")
+    public String update_user(){
+        return "update_user";
+    }
 }

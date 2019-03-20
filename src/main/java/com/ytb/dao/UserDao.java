@@ -3,6 +3,8 @@ package com.ytb.dao;
 import com.ytb.pojo.User;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface UserDao {
 
     int insert(User user);
@@ -20,5 +22,7 @@ public interface UserDao {
 
     int makePower(@Param("userId")Integer userId,
                   @Param("role")Integer role);
+
+    List<User> selectAll();
 
 }

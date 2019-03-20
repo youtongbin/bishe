@@ -33,6 +33,11 @@
         where username=#{username}
     </select>
 
+    <select id="selectAll" resultMap="BaseResultMap">
+
+        select userId,username,password,phone,email,role,create_time,update_time from user_tb
+    </select>
+
     <select id="checkUsername" parameterType="string" resultType="int">
 
         select count(1) from user_tb where username=#{username}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ytb.dao.FunctionDao">
+
+    <resultMap id="BaseResultMap" type="com.ytb.pojo.Function">
+
+        <id column="functionId" property="functionId"/>
+        <result column="function_name" property="functionName"/>
+        <result column="parentId" property="parentId"/>
+        <result column="role" property="role"/>
+        <result column="url" property="url"/>
+    </resultMap>
+
+    <select id="selectByParentId" parameterType="int" resultMap="BaseResultMap">
+
+        select functionId,function_name,parentId,role,url from function_tb
+        where parentId=#{parentId}
+    </select>
+
+    <select id="selectByParentIdAndRole" parameterType="map" resultMap="BaseResultMap">
+
+        select functionId,function_name,parentId,role,url from function_tb
+        where parentId=#{parentId} and role>=#{role}
+    </select>
+
+</mapper>

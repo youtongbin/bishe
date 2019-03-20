@@ -27,4 +27,10 @@ public interface IUserManageService {
      */
     ServerResponse makePower(Integer applyId,Integer role);
 
+    /**
+     * 查看用户列表
+     * @return
+     */
+    ServerResponse selectAll();
+
 }

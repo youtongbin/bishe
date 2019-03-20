@@ -77,6 +77,18 @@ public class UserManageController {
         return userManageService.makePower(applyId,Const.PowerEnum.SPECIALIST.getCode());
     }
 
+    @RequestMapping("/list.do")
+    public ServerResponse list(HttpSession session){
+        User user1 = (User)session.getAttribute(Const.CURRENT_USER);
+        if (user1 == null){
+            return ServerResponse.serverResponseByFail(Const.CommonEnum.NEED_LOGIN.getMsg());
+        }
 
+        if (user1.getRole() != Const.PowerEnum.MANAGER.getCode()){
+            return ServerResponse.serverResponseByFail(1,"权限不足");
+        }
+
+        return userManageService.selectAll();
+    }
 
 }

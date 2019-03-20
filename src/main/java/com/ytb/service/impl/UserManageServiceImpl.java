@@ -7,10 +7,14 @@ import com.ytb.dao.UserDao;
 import com.ytb.pojo.Apply;
 import com.ytb.pojo.User;
 import com.ytb.service.IUserManageService;
+import com.ytb.vo.UserVO;
+import com.ytb.vo.tvo.TransVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserManageServiceImpl implements IUserManageService {
@@ -87,5 +91,22 @@ public class UserManageServiceImpl implements IUserManageService {
             return ServerResponse.serverResponseByFail(1,"授权失败");
         }
         return ServerResponse.serverResponseByFail("已通过，无需修改");
+    }
+
+    @Override
+    public ServerResponse selectAll() {
+
+        List<User> userList = userDao.selectAll();
+        if (userList == null || userList.size()==0){
+            return ServerResponse.serverResponseByFail("没有用户");
+        }
+
+        List<UserVO> userVOList = new ArrayList<>();
+        for (User user:userList
+             ) {
+            userVOList.add(TransVO.transUserVO(user));
+        }
+
+        return ServerResponse.serverResponseBySuccess(userVOList);
     }
 }

@@ -158,7 +158,6 @@
                 contentType:"application/json",
                 data: JSON.stringify(loginInfo),
                 success:function (result) {
-                    console.log(result)
                     if (result.code=="0"){
                         window.location.href="home.do"
                     }else {

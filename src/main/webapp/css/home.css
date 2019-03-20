@@ -1,0 +1,102 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+.con{
+	width: 1000px;
+	height: 800px;
+	margin: 0px auto;
+	background-color: beige;
+}
+
+.head{
+	width: 100%;
+	height: 80px;
+	background-color: #4B4B4B;
+	line-height: 80px;
+}
+
+.head h1{
+	font-family: "楷体";
+	text-indent: 1em;
+}
+
+.main{
+	position: relative;
+	width: 100%;
+	height: 600px;
+}
+
+.main > div{
+	float: left;
+	position: relative;
+}
+
+.left{
+	width: 200px;
+	height: 600px;
+	background-color: #646464;
+	text-align: center;
+}
+
+dl{
+	height: auto;
+}
+
+dl dt,dl dd{
+	height: 50px;
+	line-height: 50px;
+	color: #969696;
+	border-bottom: 1px solid #969696;
+	cursor: pointer;
+}
+
+dl dt{
+	background-color: #646464;
+}
+
+
+dl dd{
+	text-align: center;
+	text-indent: 1em;
+	display: none;
+	background-color: #4B4B4B;
+}
+
+dt:hover,dd:hover{
+	color: black;
+	background-color: #ccc;
+}
+
+
+.right{
+	width: 800px;
+	height: 600px;
+	background-color: #DDDDDD;
+}
+
+.right .right_title{
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+	font-size: 22px;
+	text-indent: 1em;
+	background-color: #CCC;
+}
+
+.right .right_con{
+	margin: 15px 10px;
+	width: 780px;
+	height: 520px;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	background-color: white;
+}
+
+.right > div{
+	position: absolute;
+}
+.right > .right_item:nth-child(1){
+	z-index: 9;
+}
