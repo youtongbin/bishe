@@ -24,7 +24,7 @@
 
     <select id="selectAll" resultMap="BaseResultMap">
 
-        select applyId,userId,apply_status,create_time,update_time from apply_tb
+        select applyId,userId,apply_status,create_time,update_time from apply_tb order by applyId desc
     </select>
 
 

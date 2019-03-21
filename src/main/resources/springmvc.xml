@@ -43,6 +43,7 @@
             <mvc:exclude-mapping path="/register.do"/>
             <mvc:exclude-mapping path="/user/login.do"/>
             <mvc:exclude-mapping path="/user/register.do"/>
+            <mvc:exclude-mapping path="/user/logout.do"/>
             <bean class="com.ytb.common.HandleFilter"/>
         </mvc:interceptor>
     </mvc:interceptors>

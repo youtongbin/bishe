@@ -69,15 +69,28 @@ public class UserController {
      * @return
      */
     @RequestMapping("/update.do")
-    public ServerResponse update(HttpSession session,User user){
+    public ServerResponse update(HttpSession session,@RequestBody User user){
 
         User user1 =  (User)session.getAttribute(Const.CURRENT_USER);
         if (user1 == null){
             return ServerResponse.serverResponseByFail(Const.CommonEnum.NEED_LOGIN.getMsg());
         }
 
-        user.setUserId(user1.getUserId());
-        return userService.update(user);
+        if (user.getUserId() == user1.getUserId()){
+            return userService.update(user);
+        }
+
+        return ServerResponse.serverResponseByFail("不是当前用户");
+    }
+
+    @RequestMapping("/info.do")
+    public ServerResponse info(HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if (user == null){
+            return ServerResponse.serverResponseByFail(Const.CommonEnum.NEED_LOGIN.getMsg());
+        }
+
+        return userService.getUserInfo(user.getUserId());
     }
 
 }

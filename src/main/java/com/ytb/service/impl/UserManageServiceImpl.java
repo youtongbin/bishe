@@ -61,6 +61,14 @@ public class UserManageServiceImpl implements IUserManageService {
             return ServerResponse.serverResponseByFail(Const.CommonEnum.INPUT_NULL.getMsg());
         }
 
+        User user = userDao.selectByKey(userId);
+        if (user == null){
+            return ServerResponse.serverResponseByFail("用户不存在");
+        }
+        if (user.getRole() == Const.PowerEnum.MANAGER.getCode()){
+            return ServerResponse.serverResponseByFail("不能删除管理员账户");
+        }
+
         int result = userDao.delete(userId);
 
         if (result > 0){

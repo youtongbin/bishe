@@ -12,38 +12,44 @@
             width: 100%;
             height: 100%
         }
+        .head > div{
+            float: left;
+        }
+        #logout_btn{
+            display: inline-block;
+            height: 30px;
+            margin-top: 25px;
+            margin-left: 100px;
+        }
     </style>
 </head>
 <body>
 
 <div class="con">
     <div class="head">
-        <h1>Welcome：<span id="head-username"></span></h1>
-
+        <div>
+            <h1>Welcome：<span id="head-username"></span></h1>
+        </div>
+        <div>
+            <button id="logout_btn">退出登录</button>
+        </div>
     </div>
 
     <div class="main">
         <div class="left" id="left-menu">
             <%--<dl>
-                <dt>用户中心</dt>
-                <dd>个人中心</dd>
-                <dd>用户管理</dd>
-                <dd>添加用户</dd>
-                <dd>授权管理</dd>
-            </dl>
-            <dl>
-                <dt>关于我们</dt>
-                <dd>用户反馈</dd>
+                <dt></dt>
+                <dd></dd>
             </dl>--%>
         </div>
 
         <div class="right">
             <div class="right_item">
-                <div class="right_title">
-                    <span id="right_title">个人中心</span>
+                <div class="right_title" id="right_title">
+                    <span id="right_title_">欢迎你~~</span>
                 </div>
                 <div class="right_con" id="right_con">
-                    <iframe id="right_request" src="">
+                    <iframe id="right_request" src="welcome.do">
 
                     </iframe>
                 </div>
@@ -69,7 +75,7 @@
             type:"post",
             contentType:"application/json",
             success:function (result) {
-                console.log(result)
+                /*console.log(result)*/
                 var user = result.data.user
                 $("#head-username").text(user.username)
 
@@ -95,6 +101,7 @@
                         dd.setAttribute("value",functionVOChild.functionId)
                         dd.setAttribute("class","function")
                         dd.setAttribute("url",functionVOChild.url)
+                        dd.setAttribute("function_name",functionVOChild.functionName)
                         dd.append(newNodeName)
                         dl.appendChild(dd)
                     }
@@ -108,9 +115,8 @@
 
                 $(".function").click(function (e) {
                     var url_info = $(e.target.attributes.getNamedItem("url"))
-                    console.log(url_info[0].value)
 
-                    $("#right_title").text()
+                    $("#right_title_").text(($(e.target.attributes.getNamedItem("function_name")))[0].value)
 
                     var right_con = document.getElementById("right_con")
                     right_con.removeChild(document.getElementById("right_request"))
@@ -120,7 +126,21 @@
                     iframe.setAttribute("id","right_request")
 
                     right_con.appendChild(iframe)
+                })
 
+                $("#logout_btn").click(function () {
+                    $.ajax({
+                        url:"user/logout.do",
+                        type:"post",
+                        contentType:"application/json",
+                        success:function (result) {
+                            if (result.code == 0){
+                                window.location.href = "login.do"
+                            } else {
+                                alert(result.msg)
+                            }
+                        }
+                    })
                 })
             }
         })

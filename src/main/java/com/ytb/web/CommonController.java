@@ -16,6 +16,11 @@ public class CommonController {
         return "register";
     }
 
+    @RequestMapping("/welcome.do")
+    public String welcome(){
+        return "welcome";
+    }
+
     @RequestMapping("/upload.do")
     public String upload(){
         return "upload";
@@ -29,5 +34,25 @@ public class CommonController {
     @RequestMapping("/update_user.do")
     public String update_user(){
         return "update_user";
+    }
+
+    @RequestMapping("/add_user.do")
+    public String add_user(){
+        return "add_user";
+    }
+
+    @RequestMapping("/user_list.do")
+    public String user_list(){
+        return "user_list";
+    }
+
+    @RequestMapping("/apply_list.do")
+    public String apply_list(){
+        return "apply_list";
+    }
+
+    @RequestMapping("/apply_manage_list.do")
+    public String apply_manage_list(){
+        return "apply_manage_list";
     }
 }

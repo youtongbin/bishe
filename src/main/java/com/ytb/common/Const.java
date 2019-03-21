@@ -82,6 +82,16 @@ public class Const {
             this.code = code;
             this.msg = msg;
         }
+
+        public static ApplyStatusEnum codeOf(Integer code){
+            for (ApplyStatusEnum a:values()
+            ) {
+                if (a.code == code){
+                    return a;
+                }
+            }
+            return null;
+        }
     }
 
     @Getter

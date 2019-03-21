@@ -5,6 +5,8 @@ import com.ytb.common.ServerResponse;
 import com.ytb.dao.UserDao;
 import com.ytb.pojo.User;
 import com.ytb.service.IUserService;
+import com.ytb.vo.UserVO;
+import com.ytb.vo.tvo.TransVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -68,6 +70,13 @@ public class UserServiceImpl implements IUserService {
     @Override
     public ServerResponse update(User user) {
 
+        User user1 = userDao.selectByUsername(user.getUsername());
+        if (user1 != null){
+            if (user1.getUserId() != user.getUserId()){
+                return ServerResponse.serverResponseByFail("用户名已存在");
+            }
+        }
+
         int result = userDao.update(user);
 
         if (result > 0){
@@ -75,6 +84,23 @@ public class UserServiceImpl implements IUserService {
         }
 
         return ServerResponse.serverResponseByFail(1,"修改失败");
+    }
+
+    @Override
+    public ServerResponse getUserInfo(Integer userId) {
+
+        if (userId == null){
+            return ServerResponse.serverResponseByFail(Const.CommonEnum.INPUT_NULL.getMsg());
+        }
+
+        User user = userDao.selectByKey(userId);
+        if (user == null){
+            return ServerResponse.serverResponseByFail("用户不存在");
+        }
+
+        UserVO userVO = TransVO.transUserVO(user);
+
+        return ServerResponse.serverResponseBySuccess(userVO);
     }
 
 

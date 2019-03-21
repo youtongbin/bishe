@@ -49,6 +49,12 @@
         where username=#{username}  and password=#{password}
     </select>
 
+    <select id="selectByKey" parameterType="int" resultMap="BaseResultMap">
+
+        select userId,username,password,phone,email,role,create_time,update_time from user_tb
+        where userId=#{userId}
+    </select>
+
 
     <update id="update" parameterType="User">
 

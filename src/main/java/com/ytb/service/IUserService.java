@@ -30,5 +30,11 @@ public interface IUserService {
      */
     ServerResponse update(User user);
 
+    /**
+     * 获取用户信息
+     * @param userId
+     * @return
+     */
+    ServerResponse getUserInfo(Integer userId);
 
 }

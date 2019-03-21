@@ -1,10 +1,12 @@
 package com.ytb.vo.tvo;
 
 import com.ytb.common.Const;
+import com.ytb.pojo.Apply;
 import com.ytb.pojo.Paper;
 import com.ytb.pojo.Read;
 import com.ytb.pojo.User;
 import com.ytb.utils.DateUtils;
+import com.ytb.vo.ApplyVO;
 import com.ytb.vo.PaperVO;
 import com.ytb.vo.ReadVO;
 import com.ytb.vo.UserVO;
@@ -43,6 +45,17 @@ public class TransVO {
         userVO.setRoleDesc(Const.PowerEnum.codeOf(user.getRole()).getMsg());
 
         return userVO;
+    }
+
+    public static ApplyVO transApplyVO(Apply apply){
+        ApplyVO applyVO = new ApplyVO();
+
+        BeanUtils.copyProperties(apply,applyVO);
+        applyVO.setApplyStatusDesc(Const.ApplyStatusEnum.codeOf(apply.getApplyStatus()).getMsg());
+        applyVO.setCreateTime(DateUtils.dateToStr(apply.getCreateTime()));
+        applyVO.setUpdateTime(DateUtils.dateToStr(apply.getUpdateTime()));
+
+        return applyVO;
     }
 
 }

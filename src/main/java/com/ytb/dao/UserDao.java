@@ -25,4 +25,6 @@ public interface UserDao {
 
     List<User> selectAll();
 
+    User selectByKey(Integer userId);
+
 }
