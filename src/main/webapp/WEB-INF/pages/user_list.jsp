@@ -61,41 +61,8 @@
             success:function (result) {
                 if (result.code == 0){
                     var user_list = result.data
-                    var size = user_list.length
                     /*console.log(user_list)*/
-
-                    var tbody = $("#tbody")[0]
-
-                    for (var i = 0;i < size;i++){
-                        var tr = document.createElement("tr")
-                        var userId = document.createElement("td")
-                        var username = document.createElement("td")
-                        var password = document.createElement("td")
-                        var phone = document.createElement("td")
-                        var email = document.createElement("td")
-                        var role = document.createElement("td")
-                        var option = document.createElement("td")
-                        var op_btn = document.createElement("input")
-                        op_btn.setAttribute("type","button")
-                        op_btn.setAttribute("userId",user_list[i].userId)
-                        op_btn.setAttribute("value","删除")
-                        op_btn.setAttribute("class","delete_btn")
-                        userId.append(user_list[i].userId)
-                        username.append(user_list[i].username)
-                        password.append(user_list[i].password)
-                        phone.append(user_list[i].phone)
-                        email.append(user_list[i].email)
-                        role.append(user_list[i].roleDesc)
-                        option.append(op_btn)
-                        tr.appendChild(userId)
-                        tr.appendChild(username)
-                        tr.appendChild(password)
-                        tr.appendChild(phone)
-                        tr.appendChild(email)
-                        tr.appendChild(role)
-                        tr.appendChild(option)
-                        tbody.appendChild(tr)
-                    }
+                    user_list_view(user_list)
 
                     $(".delete_btn").click(function (e) {
                         if (confirm("确定删除？")){
@@ -109,11 +76,9 @@
                                 data:{"userId":userId},
                                 success:function (result) {
                                     /*console.log(result)*/
+                                    alert(result.msg)
                                     if (result.code == 0){
                                         tr.remove()
-                                        alert(result.msg)
-                                    }else {
-                                        alert(result.msg)
                                     }
                                 }
                             })
@@ -124,6 +89,43 @@
                 }
             }
         })
+
+        function user_list_view(user_list) {
+            var size = user_list.length
+
+            var tbody = $("#tbody")[0]
+
+            for (var i = 0;i < size;i++){
+                var tr = document.createElement("tr")
+                var userId = document.createElement("td")
+                var username = document.createElement("td")
+                var password = document.createElement("td")
+                var phone = document.createElement("td")
+                var email = document.createElement("td")
+                var role = document.createElement("td")
+                var option = document.createElement("td")
+                var op_btn = document.createElement("input")
+                op_btn.setAttribute("type","button")
+                op_btn.setAttribute("userId",user_list[i].userId)
+                op_btn.setAttribute("value","删除")
+                op_btn.setAttribute("class","delete_btn")
+                userId.append(user_list[i].userId)
+                username.append(user_list[i].username)
+                password.append(user_list[i].password)
+                phone.append(user_list[i].phone)
+                email.append(user_list[i].email)
+                role.append(user_list[i].roleDesc)
+                option.append(op_btn)
+                tr.appendChild(userId)
+                tr.appendChild(username)
+                tr.appendChild(password)
+                tr.appendChild(phone)
+                tr.appendChild(email)
+                tr.appendChild(role)
+                tr.appendChild(option)
+                tbody.appendChild(tr)
+            }
+        }
     })
 
 </script>

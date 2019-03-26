@@ -25,7 +25,7 @@ public class PaperJudgeController {
         if (user == null){
             return ServerResponse.serverResponseByFail(Const.CommonEnum.NEED_LOGIN.getMsg());
         }
-        if (user.getRole() != Const.PowerEnum.SPECIALIST.getCode()){
+        if (user.getRole() == Const.PowerEnum.COMMON.getCode()){
             return ServerResponse.serverResponseByFail(Const.CommonEnum.NO_POWER.getMsg());
         }
 

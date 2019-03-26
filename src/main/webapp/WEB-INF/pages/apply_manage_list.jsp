@@ -57,39 +57,7 @@
                 if (result.code == 0){
 
                     var apply_list = result.data
-                    var size = apply_list.length
-
-                    var tbody = $("#tbody")[0]
-
-                    for (var i = 0;i < size;i++){
-                        var tr = document.createElement("tr")
-                        var applyId = document.createElement("td")
-                        var apply_status = document.createElement("td")
-                        var create_time = document.createElement("td")
-                        var update_time = document.createElement("td")
-                        var option = document.createElement("td")
-
-                        apply_status.setAttribute("class","apply_status")
-
-                        applyId.append(apply_list[i].applyId)
-                        apply_status.append(apply_list[i].applyStatusDesc)
-                        create_time.append(apply_list[i].createTime)
-                        update_time.append(apply_list[i].updateTime)
-                        var opt_true = document.createElement("input")
-                        opt_true.setAttribute("type","button")
-                        opt_true.setAttribute("class","opt_true")
-                        opt_true.setAttribute("value","通过")
-                        opt_true.setAttribute("applyId",apply_list[i].applyId)
-                        option.appendChild(opt_true)
-
-                        tr.appendChild(applyId)
-                        tr.appendChild(apply_status)
-                        tr.appendChild(create_time)
-                        tr.appendChild(update_time)
-                        tr.appendChild(option)
-
-                        tbody.appendChild(tr)
-                    }
+                    apply_list_view(apply_list)
 
                     $(".opt_true").click(function (e) {
                         var applyId = $(e.target.attributes.getNamedItem("applyid"))[0].value
@@ -119,6 +87,42 @@
                 }
             }
         })
+
+        function apply_list_view(apply_list) {
+            var size = apply_list.length
+
+            var tbody = $("#tbody")[0]
+
+            for (var i = 0;i < size;i++){
+                var tr = document.createElement("tr")
+                var applyId = document.createElement("td")
+                var apply_status = document.createElement("td")
+                var create_time = document.createElement("td")
+                var update_time = document.createElement("td")
+                var option = document.createElement("td")
+
+                apply_status.setAttribute("class","apply_status")
+
+                applyId.append(apply_list[i].applyId)
+                apply_status.append(apply_list[i].applyStatusDesc)
+                create_time.append(apply_list[i].createTime)
+                update_time.append(apply_list[i].updateTime)
+                var opt_true = document.createElement("input")
+                opt_true.setAttribute("type","button")
+                opt_true.setAttribute("class","opt_true")
+                opt_true.setAttribute("value","通过")
+                opt_true.setAttribute("applyId",apply_list[i].applyId)
+                option.appendChild(opt_true)
+
+                tr.appendChild(applyId)
+                tr.appendChild(apply_status)
+                tr.appendChild(create_time)
+                tr.appendChild(update_time)
+                tr.appendChild(option)
+
+                tbody.appendChild(tr)
+            }
+        }
     })
 
 </script>

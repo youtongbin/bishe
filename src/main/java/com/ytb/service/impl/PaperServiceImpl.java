@@ -3,6 +3,7 @@ package com.ytb.service.impl;
 import com.ytb.common.Const;
 import com.ytb.common.ServerResponse;
 import com.ytb.dao.PaperDao;
+import com.ytb.dao.UserDao;
 import com.ytb.pojo.Paper;
 import com.ytb.service.IPaperService;
 import com.ytb.utils.FTPUtils;
@@ -23,11 +24,14 @@ public class PaperServiceImpl implements IPaperService {
     @Resource
     private PaperDao paperDao;
 
+    @Resource
+    private UserDao userDao;
+
 
     @Override
     public ServerResponse upload(MultipartFile file,Integer userId,String path,String desc) {
 
-        if (file == null){
+        if (file == null || file.getOriginalFilename().equals("")){
             return ServerResponse.serverResponseByFail("文件不能为空");
         }
 
@@ -35,7 +39,7 @@ public class PaperServiceImpl implements IPaperService {
         String fileName = file.getOriginalFilename();
         //2、获取后缀扩展名
         String exName = fileName.substring(fileName.lastIndexOf("."));
-        if (!exName.equals(".pdf") && !exName.equals(".doc") && !exName.equals(".docx")){
+        if (!exName.equals(".doc") && !exName.equals(".docx")){
             return ServerResponse.serverResponseByFail("文件格式不正确");
         }
 
@@ -101,16 +105,16 @@ public class PaperServiceImpl implements IPaperService {
         List<PaperVO> paperVOList = new ArrayList<>();
         for (Paper paper:paperList
              ) {
-            paperVOList.add(TransVO.transPaperVO(paper));
+            paperVOList.add(TransVO.transPaperVO(paper,userDao.selectByKey(userId)));
         }
 
         return ServerResponse.serverResponseBySuccess(paperVOList);
     }
 
     @Override
-    public ServerResponse update(MultipartFile file, Integer paperId, String path, String desc) {
+    public ServerResponse update(MultipartFile file, Integer paperId, String path, String desc,Integer userId) {
 
-        if (file == null){
+        if (file == null || file.getOriginalFilename().equals("")){
             return ServerResponse.serverResponseByFail("文件不能为空");
         }
 
@@ -118,7 +122,7 @@ public class PaperServiceImpl implements IPaperService {
         String fileName = file.getOriginalFilename();
         //2、获取后缀扩展名
         String exName = fileName.substring(fileName.lastIndexOf("."));
-        if (!exName.equals(".pdf") && !exName.equals(".doc") && !exName.equals(".docx")){
+        if (!exName.equals(".doc") && !exName.equals(".docx")){
             return ServerResponse.serverResponseByFail("文件格式不正确");
         }
 
@@ -164,14 +168,20 @@ public class PaperServiceImpl implements IPaperService {
                 int result = paperDao.update(paper);
 
                 if (result > 0){
-                    Map<String,String> map = new HashMap<>();
-                    map.put("url", fileUrl);
-                    map.put("uri",newFileName);
-                    map.put("fileName",fileName);
-
                     file1.delete();
 
-                    return ServerResponse.serverResponseBySuccess(map,"修改成功");
+                    List<Paper> paperList = paperDao.selectByUserId(userId);
+                    if (paperList == null || paperList.size() == 0){
+                        return ServerResponse.serverResponseByFail("获取失败");
+                    }
+
+                    List<PaperVO> paperVOList = new ArrayList<>();
+                    for (Paper p:paperList
+                         ) {
+                        paperVOList.add(TransVO.transPaperVO(p,userDao.selectByKey(p.getUserId())));
+                    }
+
+                    return ServerResponse.serverResponseBySuccess(paperVOList,"修改成功");
                 }
                 file1.delete();
                 return ServerResponse.serverResponseByFail("数据库保存失败");
@@ -200,10 +210,27 @@ public class PaperServiceImpl implements IPaperService {
 
         int result = paperDao.deleteByKeyAndUserId(paperId,userId);
         if (result > 0){
-            return ServerResponse.serverResponseBySuccess("删除修改");
+            return ServerResponse.serverResponseBySuccess(null,"删除成功");
         }
 
-        return ServerResponse.serverResponseByFail("删除失败");
+        return ServerResponse.serverResponseByFail(1,"删除失败");
+    }
+
+    @Override
+    public ServerResponse selectByPaperId(Integer paperId) {
+
+        if (paperId == null){
+            return ServerResponse.serverResponseByFail(Const.CommonEnum.INPUT_NULL.getMsg());
+        }
+
+        Paper paper = paperDao.selectByPaperId(paperId);
+        if (paper == null){
+            return ServerResponse.serverResponseByFail("该论文不存在");
+        }
+
+        PaperVO paperVO = TransVO.transPaperVO(paper,userDao.selectByKey(paper.getUserId()));
+
+        return ServerResponse.serverResponseBySuccess(paperVO);
     }
 
 }

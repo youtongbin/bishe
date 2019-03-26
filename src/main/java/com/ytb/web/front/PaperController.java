@@ -24,7 +24,7 @@ public class PaperController {
     @RequestMapping("/upload.do")
     public ServerResponse upload(HttpSession session,
                                  @RequestParam(value = "file_upload",required = false) MultipartFile file,
-                                 String desc){
+                                 @RequestParam(value = "paper_desc") String desc){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null){
             return ServerResponse.serverResponseByFail(Const.CommonEnum.NEED_LOGIN.getMsg());
@@ -32,7 +32,6 @@ public class PaperController {
 
         return paperService.upload(file,user.getUserId(),Const.TEMP_KEEP,desc);
     }
-
 
     @RequestMapping("/list.do")
     public ServerResponse list(HttpSession session){
@@ -47,14 +46,15 @@ public class PaperController {
     @RequestMapping("/update.do")
     public ServerResponse update(HttpSession session,
                                  @RequestParam(value = "file_upload",required = false)MultipartFile file,
-                                 Integer paperId,String desc){
+                                 @RequestParam(value = "paperId") Integer paperId,
+                                 @RequestParam(value = "paper_desc") String desc){
 
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null){
             return ServerResponse.serverResponseByFail(Const.CommonEnum.NEED_LOGIN.getMsg());
         }
 
-        return paperService.update(file,paperId,Const.TEMP_KEEP,desc);
+        return paperService.update(file,paperId,Const.TEMP_KEEP,desc,user.getUserId());
 
     }
 
@@ -69,6 +69,16 @@ public class PaperController {
 
         return paperService.deleteByKeyAndUserId(paperId,user.getUserId());
 
+    }
+
+    @RequestMapping("/one.do")
+    public ServerResponse one(HttpSession session,Integer paperId){
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null){
+            return ServerResponse.serverResponseByFail(Const.CommonEnum.NEED_LOGIN.getMsg());
+        }
+
+        return paperService.selectByPaperId(paperId);
     }
 
 }

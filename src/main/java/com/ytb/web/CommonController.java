@@ -21,9 +21,9 @@ public class CommonController {
         return "welcome";
     }
 
-    @RequestMapping("/upload.do")
+    @RequestMapping("/paper_upload.do")
     public String upload(){
-        return "upload";
+        return "paper_upload";
     }
 
     @RequestMapping("/home.do")
@@ -31,14 +31,14 @@ public class CommonController {
         return "home";
     }
 
-    @RequestMapping("/update_user.do")
+    @RequestMapping("/user_update.do")
     public String update_user(){
-        return "update_user";
+        return "user_update";
     }
 
-    @RequestMapping("/add_user.do")
+    @RequestMapping("/user_add.do")
     public String add_user(){
-        return "add_user";
+        return "user_add";
     }
 
     @RequestMapping("/user_list.do")
@@ -54,5 +54,20 @@ public class CommonController {
     @RequestMapping("/apply_manage_list.do")
     public String apply_manage_list(){
         return "apply_manage_list";
+    }
+
+    @RequestMapping("/paper_list")
+    public String paper_list(){
+        return "paper_list";
+    }
+
+    @RequestMapping("/paper_manage_list.do")
+    public String paper_manage_list(){
+        return "paper_manage_list";
+    }
+
+    @RequestMapping("/paper_judge_list.do")
+    public String paper_judge_list(){
+        return "paper_judge_list";
     }
 }

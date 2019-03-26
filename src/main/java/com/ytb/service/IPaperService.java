@@ -27,7 +27,7 @@ public interface IPaperService {
      * @param desc
      * @return
      */
-    ServerResponse update(MultipartFile file,Integer paperId,String path,String desc);
+    ServerResponse update(MultipartFile file,Integer paperId,String path,String desc,Integer userId);
 
 
     /**
@@ -44,5 +44,12 @@ public interface IPaperService {
      * @return
      */
     ServerResponse deleteByKeyAndUserId(Integer paperId,Integer userId);
+
+    /**
+     * 获取论文信息
+     * @param paperId
+     * @return
+     */
+    ServerResponse selectByPaperId(Integer paperId);
 
 }

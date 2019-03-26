@@ -1,6 +1,9 @@
 package com.ytb.vo;
 
+import com.ytb.dao.UserDao;
 import lombok.Data;
+
+import javax.annotation.Resource;
 
 @Data
 public class PaperVO {
@@ -8,6 +11,8 @@ public class PaperVO {
     private Integer paperId;
 
     private Integer userId;
+
+    private String username;
 
     private String identifyingName;
 

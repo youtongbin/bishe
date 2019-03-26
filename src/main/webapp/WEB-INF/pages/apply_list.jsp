@@ -54,37 +54,39 @@
             success:function (result) {
                 /*console.log(result)*/
                 if (result.code == 0){
-
                     var apply_list = result.data
-                    var size = apply_list.length
-
-                    var tbody = $("#tbody")[0]
-
-                    for (var i = 0;i < size;i++){
-                        var tr = document.createElement("tr")
-                        var applyId = document.createElement("td")
-                        var apply_status = document.createElement("td")
-                        var create_time = document.createElement("td")
-                        var update_time = document.createElement("td")
-
-                        applyId.append(apply_list[i].applyId)
-                        apply_status.append(apply_list[i].applyStatusDesc)
-                        create_time.append(apply_list[i].createTime)
-                        update_time.append(apply_list[i].updateTime)
-
-                        tr.appendChild(applyId)
-                        tr.appendChild(apply_status)
-                        tr.appendChild(create_time)
-                        tr.appendChild(update_time)
-
-                        tbody.appendChild(tr)
-                    }
-
+                    apply_list_view(apply_list)
                 } else {
                     alert(result.msg)
                 }
             }
         })
+
+        function apply_list_view(apply_list) {
+            var size = apply_list.length
+
+            var tbody = $("#tbody")[0]
+
+            for (var i = 0;i < size;i++){
+                var tr = document.createElement("tr")
+                var applyId = document.createElement("td")
+                var apply_status = document.createElement("td")
+                var create_time = document.createElement("td")
+                var update_time = document.createElement("td")
+
+                applyId.append(apply_list[i].applyId)
+                apply_status.append(apply_list[i].applyStatusDesc)
+                create_time.append(apply_list[i].createTime)
+                update_time.append(apply_list[i].updateTime)
+
+                tr.appendChild(applyId)
+                tr.appendChild(apply_status)
+                tr.appendChild(create_time)
+                tr.appendChild(update_time)
+
+                tbody.appendChild(tr)
+            }
+        }
     })
 
 </script>

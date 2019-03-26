@@ -2,6 +2,7 @@ package com.ytb.service.impl;
 
 import com.ytb.common.ServerResponse;
 import com.ytb.dao.PaperDao;
+import com.ytb.dao.UserDao;
 import com.ytb.pojo.Paper;
 import com.ytb.service.IPaperManageService;
 import com.ytb.vo.PaperVO;
@@ -18,6 +19,9 @@ public class PaperManageServiceImpl implements IPaperManageService {
     @Resource
     private PaperDao paperDao;
 
+    @Resource
+    private UserDao userDao;
+
     @Override
     public ServerResponse selectAll() {
 
@@ -30,7 +34,7 @@ public class PaperManageServiceImpl implements IPaperManageService {
         List<PaperVO> paperVOList = new ArrayList<>();
         for (Paper paper:paperList
              ) {
-            paperVOList.add(TransVO.transPaperVO(paper));
+            paperVOList.add(TransVO.transPaperVO(paper,userDao.selectByKey(paper.getUserId())));
         }
 
         return ServerResponse.serverResponseBySuccess(paperVOList);

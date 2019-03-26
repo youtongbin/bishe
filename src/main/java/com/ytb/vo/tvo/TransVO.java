@@ -1,6 +1,7 @@
 package com.ytb.vo.tvo;
 
 import com.ytb.common.Const;
+import com.ytb.dao.UserDao;
 import com.ytb.pojo.Apply;
 import com.ytb.pojo.Paper;
 import com.ytb.pojo.Read;
@@ -14,10 +15,13 @@ import org.springframework.beans.BeanUtils;
 
 public class TransVO {
 
-    public static PaperVO transPaperVO(Paper paper){
+    public static PaperVO transPaperVO(Paper paper,User user){
         PaperVO paperVO = new PaperVO();
 
         BeanUtils.copyProperties(paper,paperVO);
+        if (user != null){
+            paperVO.setUsername(user.getUsername());
+        }
         paperVO.setPaperStatusDesc(Const.PaperStatusEnum.codeOf(paper.getPaperStatus()).getMsg());
         paperVO.setCreateTime(DateUtils.dateToStr(paper.getCreateTime()));
         paperVO.setUpdateTime(DateUtils.dateToStr(paper.getUpdateTime()));

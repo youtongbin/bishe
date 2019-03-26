@@ -5,6 +5,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public class FTPUtils {
@@ -43,7 +44,6 @@ public class FTPUtils {
 
         return false;
     }
-
 
     public  boolean uploadFile(String remotePath,List<File> fileList) throws IOException {
         FileInputStream fileInputStream=null;
@@ -84,7 +84,7 @@ public class FTPUtils {
      * */
     FTPClient ftpClient=null;
 
-    public    boolean connectFTPServer(String ip,String user,String password) {
+    public boolean connectFTPServer(String ip,String user,String password) {
         ftpClient=new FTPClient();
 
         try {
