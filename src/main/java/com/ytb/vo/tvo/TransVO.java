@@ -29,10 +29,16 @@ public class TransVO {
         return paperVO;
     }
 
-    public static ReadVO transReadVO(Read read){
+    public static ReadVO transReadVO(Read read,Paper paper,User user){
         ReadVO readVO = new ReadVO();
 
         BeanUtils.copyProperties(read,readVO);
+        if (paper != null){
+            readVO.setPaperName(paper.getPaperName());
+        }
+        if (user != null){
+            readVO.setUsername(user.getUsername());
+        }
         readVO.setReadStatusDesc(Const.ReadStatusEnum.codeOf(read.getReadStatus()).getMsg());
         readVO.setCreateTime(DateUtils.dateToStr(read.getCreateTime()));
         readVO.setUpdateTime(DateUtils.dateToStr(read.getUpdateTime()));

@@ -47,20 +47,25 @@
 <script type="text/javascript">
 
     $(function () {
-        $.ajax({
-            url:"power/power_up_list.do",
-            type:"get",
-            contentType:"application/json",
-            success:function (result) {
-                /*console.log(result)*/
-                if (result.code == 0){
-                    var apply_list = result.data
-                    apply_list_view(apply_list)
-                } else {
-                    alert(result.msg)
+
+        init()
+
+        function init(){
+            $.ajax({
+                url:"power/power_up_list.do",
+                type:"get",
+                contentType:"application/json",
+                success:function (result) {
+                    /*console.log(result)*/
+                    if (result.code == 0){
+                        var apply_list = result.data
+                        apply_list_view(apply_list)
+                    } else {
+                        alert(result.msg)
+                    }
                 }
-            }
-        })
+            })
+        }
 
         function apply_list_view(apply_list) {
             var size = apply_list.length

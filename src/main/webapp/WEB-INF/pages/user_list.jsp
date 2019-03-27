@@ -54,41 +54,46 @@
 <script type="text/javascript">
 
     $(function () {
-        $.ajax({
-            url:"user_manage/list.do",
-            type:"get",
-            contentType:"application/json",
-            success:function (result) {
-                if (result.code == 0){
-                    var user_list = result.data
-                    /*console.log(user_list)*/
-                    user_list_view(user_list)
 
-                    $(".delete_btn").click(function (e) {
-                        if (confirm("确定删除？")){
-                            var userId = $($(e)[0].target)[0].attributes.getNamedItem("userid").value
-                            var tr = $(this).parent().parent()
+        init()
 
-                            $.ajax({
-                                url:"user_manage/delete_user.do",
-                                type:"get",
-                                contentType:"application/json",
-                                data:{"userId":userId},
-                                success:function (result) {
-                                    /*console.log(result)*/
-                                    alert(result.msg)
-                                    if (result.code == 0){
-                                        tr.remove()
-                                    }
-                                }
-                            })
+        $("body").on("click",".delete_btn",function (e) {
+            if (confirm("确定删除？")){
+                var userId = $($(e)[0].target)[0].attributes.getNamedItem("userid").value
+                var tr = $(this).parent().parent()
+
+                $.ajax({
+                    url:"user_manage/delete_user.do",
+                    type:"get",
+                    contentType:"application/json",
+                    data:{"userId":userId},
+                    success:function (result) {
+                        /*console.log(result)*/
+                        alert(result.msg)
+                        if (result.code == 0){
+                            tr.remove()
                         }
-                    })
-                } else {
-                    alert(result.msg)
-                }
+                    }
+                })
             }
         })
+
+        function init() {
+            $.ajax({
+                url:"user_manage/list.do",
+                type:"get",
+                contentType:"application/json",
+                success:function (result) {
+                    if (result.code == 0){
+                        var user_list = result.data
+                        /*console.log(user_list)*/
+                        user_list_view(user_list)
+                    } else {
+                        alert(result.msg)
+                    }
+                }
+            })
+        }
 
         function user_list_view(user_list) {
             var size = user_list.length

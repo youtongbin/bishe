@@ -11,7 +11,7 @@ public interface IReadService {
      * @param read
      * @return
      */
-    ServerResponse insert(Integer userId, Read read);
+    ServerResponse insert(Integer userId, Read read,Integer role);
 
     /**
      * 管理员查看审批信息
@@ -25,12 +25,12 @@ public interface IReadService {
      * @param read
      * @return
      */
-    ServerResponse update(Read read);
+    ServerResponse update(Read read,Integer userId,Integer role);
 
     /**
      * 查看列表
      * @param paperId
      * @return
      */
-    ServerResponse list(Integer paperId);
+    ServerResponse list(Integer paperId,Integer userId,Integer role);
 }

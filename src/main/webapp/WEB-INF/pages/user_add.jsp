@@ -12,8 +12,13 @@
             padding: 0;
         }
 
+        #con{
+            text-align: center;
+        }
+
         #user_fm{
             text-align: center;
+            margin: 30px auto;
         }
 
         #user_tb{
@@ -37,6 +42,8 @@
         }
 
         input{
+            width: 50%;
+            min-width: 200px;
             height: 30px;
             line-height: 30px;
             text-indent: 1em;
@@ -44,15 +51,18 @@
         }
 
         #role{
+            width: 50%;
+            min-width: 200px;
             height: 30px;
-            width: 163px;
+            text-indent: 1em;
+            letter-spacing: .5em;
         }
 
         #submit{
             display: inline-block;
             width: 80px;
             height: 30px;
-            margin-top: 30px;
+            margin-top: 50px;
         }
 
     </style>
@@ -62,6 +72,7 @@
 <body>
 
 <div id="con">
+    <h1 style="margin-top: 30px">添加用户</h1>
     <form id="user_fm">
         <table id="user_tb" border="1" cellpadding="0" cellspacing="0">
 
@@ -103,7 +114,9 @@
 
     $(function () {
 
-        $("#submit").click(function () {
+        init()
+
+        $("body").on("click","#submit",function () {
             var fm = $("#user_fm").serializeJSON()
             var username = $("#username").val().toString()
             var password = $("#password").val().toString()
@@ -139,6 +152,10 @@
                 alert("用户名输入错误")
             }
         })
+
+        function init() {
+
+        }
 
     })
 

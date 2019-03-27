@@ -9,7 +9,11 @@ public class ReadVO {
 
     private Integer paperId;
 
+    private String paperName;
+
     private Integer userId;
+
+    private String username;
 
     //审批意见
     private String readView;

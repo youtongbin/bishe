@@ -38,7 +38,8 @@
 
         textarea{
             width: 100%;
-            height: 10em;
+            height: 8em;
+            font-size: 1.5em;
         }
 
         #button input{
@@ -89,7 +90,10 @@
 <script type="text/javascript" src="js/jquery.serializejson.min.js"></script>
 <script type="text/javascript">
     $(function () {
-        $("#submit").click(function () {
+
+        init()
+
+        $("body").on("click","#submit",function () {
             var fd = new FormData($("#fm")[0])
 
             if (fd.get("file_upload").name == ""){
@@ -114,6 +118,11 @@
                 }
             }
         })
+
+        function init() {
+
+        }
+
     })
 </script>
 

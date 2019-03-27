@@ -29,6 +29,7 @@
     <select id="selectAllByPaperId" parameterType="int" resultMap="BaseResultMap">
 
         select readId,paperId,userId,read_view,read_status,create_time,update_time from read_tb where paperId=#{paperId}
+        order by readId desc
     </select>
     
     <update id="update" parameterType="Read">

@@ -27,7 +27,7 @@
     <select id="selectByUserId" parameterType="int" resultMap="BaseResultMap">
 
         select paperId,userId,identifying_name,paper_name,paper_desc,paper_status,paper_url,create_time,update_time
-        from paper_tb where userId=#{userId}
+        from paper_tb where userId=#{userId} order by paperId desc
     </select>
 
     <select id="selectByPaperId" parameterType="int" resultMap="BaseResultMap">
@@ -61,7 +61,7 @@
     <select id="selectAll" resultMap="BaseResultMap">
 
         select paperId,userId,identifying_name,paper_name,paper_desc,paper_status,paper_url,create_time,update_time
-        from paper_tb
+        from paper_tb order by paperId desc
     </select>
 
     <delete id="delete" parameterType="int">

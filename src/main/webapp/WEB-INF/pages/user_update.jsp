@@ -110,89 +110,97 @@
 <script type="text/javascript">
 
     $(function () {
-        $.ajax({
-            url:"user/info.do",
-            type:"post",
-            contentType:"application/json",
-            success:function (result) {
-                if (result.code == 0){
-                    var user = result.data
-                    /*console.log(user)*/
-                    $("#userId")[0].value = user.userId
-                    $("#username")[0].value = user.username
-                    $("#password")[0].value = user.password
-                    $("#phone")[0].value = user.phone
-                    $("#email")[0].value = user.email
-                    $("#role").text(user.roleDesc)
-                    $("#create_time").text(user.createTime)
-                    $("#update_time").text(user.updateTime)
 
-                    /*用户申请授权按钮*/
-                    if (user.role == 2){
-                        var role_td = $("#role").parent()[0]
-                        var role_btn = document.createElement("input")
-                        role_btn.setAttribute("type","button")
-                        role_btn.setAttribute("id","role_btn")
-                        role_btn.setAttribute("value","申请授权")
-                        $(role_td)[0].appendChild(role_btn)
-                    }
+        init()
 
-                    $("#submit").click(function () {
-                        var fm = $("#user_fm").serializeJSON()
-                        var username = $("#username").val().toString()
-                        var password = $("#password").val().toString()
-                        var phone = $("#phone").val().toString()
-                        var email = $("#email").val().toString()
+        $("body").on("click","#submit",function () {
+            var fm = $("#user_fm").serializeJSON()
+            var username = $("#username").val().toString()
+            var password = $("#password").val().toString()
+            var phone = $("#phone").val().toString()
+            var email = $("#email").val().toString()
 
-                        /*console.log(JSON.stringify(fm))*/
-                        if (username.length >= 6 && username.length <= 12){
-                            if (password.length >= 6 && password.length <= 12){
-                                if(/^1[34578]\d{9}$/.test(phone)){
-                                    if (/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(email)){
+            /*console.log(JSON.stringify(fm))*/
+            if (username.length >= 6 && username.length <= 12){
+                if (password.length >= 6 && password.length <= 12){
+                    if(/^1[34578]\d{9}$/.test(phone)){
+                        if (/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(email)){
 
-                                        if (confirm("确认修改？")){
-                                            $.ajax({
-                                                type:"post",
-                                                url:"user/update.do",
-                                                contentType: "application/json",
-                                                data:JSON.stringify(fm),
-                                                success:function (result) {
-                                                    alert(result.msg)
-                                                }
-                                            })
-                                        }
-                                    } else {
-                                        alert("邮箱格式输入错误")
+                            if (confirm("确认修改？")){
+                                $.ajax({
+                                    type:"post",
+                                    url:"user/update.do",
+                                    contentType: "application/json",
+                                    data:JSON.stringify(fm),
+                                    success:function (result) {
+                                        alert(result.msg)
                                     }
-                                }else {
-                                    alert("手机号码有误，请重填")
-                                }
-                            } else {
-                                alert("密码输入错误")
+                                })
                             }
                         } else {
-                            alert("用户名输入错误")
+                            alert("邮箱格式输入错误")
                         }
-                    })
-
-                    $("#role_btn").click(function () {
-                        if (confirm("确认提交申请？")){
-                            $.ajax({
-                                url:"power/power_up.do",
-                                type:"get",
-                                contentType:"application/json",
-                                success:function (result) {
-                                    alert(result.msg)
-                                }
-                            })
-                        }
-                    })
-
+                    }else {
+                        alert("手机号码有误，请重填")
+                    }
                 } else {
-                    alert(result.msg)
+                    alert("密码输入错误")
                 }
+            } else {
+                alert("用户名输入错误")
             }
         })
+
+        $("body").on("click","#role_btn",function () {
+            if (confirm("确认提交申请？")){
+                $.ajax({
+                    url:"power/power_up.do",
+                    type:"get",
+                    contentType:"application/json",
+                    success:function (result) {
+                        alert(result.msg)
+                    }
+                })
+            }
+        })
+
+        function init() {
+            $.ajax({
+                url:"user/info.do",
+                type:"post",
+                contentType:"application/json",
+                success:function (result) {
+                    if (result.code == 0){
+                        var user = result.data
+                        /*console.log(user)*/
+                        user_update_view(user)
+                    } else {
+                        alert(result.msg)
+                    }
+                }
+            })
+        }
+
+        function user_update_view(user) {
+            $("#userId")[0].value = user.userId
+            $("#username")[0].value = user.username
+            $("#password")[0].value = user.password
+            $("#phone")[0].value = user.phone
+            $("#email")[0].value = user.email
+            $("#role").text(user.roleDesc)
+            $("#create_time").text(user.createTime)
+            $("#update_time").text(user.updateTime)
+
+            /*用户申请授权按钮*/
+            if (user.role == 2){
+                var role_td = $("#role").parent()[0]
+                var role_btn = document.createElement("input")
+                role_btn.setAttribute("type","button")
+                role_btn.setAttribute("id","role_btn")
+                role_btn.setAttribute("value","申请授权")
+                $(role_td)[0].appendChild(role_btn)
+            }
+        }
     })
 
 </script>

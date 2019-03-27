@@ -4,9 +4,12 @@ import com.ytb.common.Const;
 import com.ytb.common.ServerResponse;
 import com.ytb.dao.PaperDao;
 import com.ytb.dao.ReadDao;
+import com.ytb.dao.UserDao;
 import com.ytb.pojo.Paper;
 import com.ytb.pojo.Read;
+import com.ytb.pojo.User;
 import com.ytb.service.IReadService;
+import com.ytb.vo.PaperVO;
 import com.ytb.vo.ReadVO;
 import com.ytb.vo.tvo.TransVO;
 import org.springframework.stereotype.Service;
@@ -25,12 +28,23 @@ public class ReadServiceImpl implements IReadService {
     @Resource
     private PaperDao paperDao;
 
+    @Resource
+    private UserDao userDao;
+
     @Override
     @Transactional
-    public ServerResponse insert(Integer userId, Read read) {
+    public ServerResponse insert(Integer userId, Read read,Integer role) {
 
         if (read == null){
             return ServerResponse.serverResponseByFail(Const.CommonEnum.INPUT_NULL.getMsg());
+        }
+
+        User user = userDao.selectByKey(userId);
+        if (user == null){
+            return ServerResponse.serverResponseByFail("用户出错");
+        }
+        if (user.getRole() != role){
+            return ServerResponse.serverResponseByFail(Const.CommonEnum.NO_POWER.getMsg());
         }
 
         read.setUserId(userId);
@@ -51,8 +65,16 @@ public class ReadServiceImpl implements IReadService {
             int result1 = paperDao.update(paper);
             if (result1 > 0){
                 //ReadVO
-                ReadVO readVO = TransVO.transReadVO(read);
-                return ServerResponse.serverResponseBySuccess(readVO);
+                List<Paper> paperList = paperDao.selectAll();
+                if (paperList != null && paperList.size() != 0){
+                    List<PaperVO> paperVOList = new ArrayList<>();
+                    for (Paper p:paperList
+                         ) {
+                        paperVOList.add(TransVO.transPaperVO(p,userDao.selectByKey(p.getUserId())));
+                    }
+
+                    return ServerResponse.serverResponseBySuccess(paperVOList,"审批成功");
+                }
             }else {
                 return ServerResponse.serverResponseByFail(Const.PaperStatusEnum.codeOf(paper.getPaperStatus()).getMsg());
             }
@@ -68,17 +90,27 @@ public class ReadServiceImpl implements IReadService {
         if (read == null){
             return ServerResponse.serverResponseByFail("评审信息不存在");
         }
-        ReadVO readVO = TransVO.transReadVO(read);
+        Paper paper = paperDao.selectByPaperId(read.getPaperId());
+        User user = userDao.selectByKey(read.getUserId());
+        ReadVO readVO = TransVO.transReadVO(read,paper,user);
 
         return ServerResponse.serverResponseBySuccess(readVO);
     }
 
     @Override
     @Transactional
-    public ServerResponse update(Read read) {
+    public ServerResponse update(Read read,Integer userId,Integer role) {
 
         if (read == null){
             return ServerResponse.serverResponseByFail(Const.CommonEnum.INPUT_NULL.getMsg());
+        }
+
+        User user = userDao.selectByKey(userId);
+        if (user == null){
+            return ServerResponse.serverResponseByFail("用户出错");
+        }
+        if (user.getRole() != role){
+            return ServerResponse.serverResponseByFail(Const.CommonEnum.NO_POWER.getMsg());
         }
 
         int result = readDao.update(read);
@@ -94,7 +126,9 @@ public class ReadServiceImpl implements IReadService {
 
             int result1 = paperDao.update(paper);
             if (result1 > 0){
-                ReadVO readVO = TransVO.transReadVO(read);
+                Paper paper1 = paperDao.selectByPaperId(read.getPaperId());
+                User user1 = userDao.selectByKey(read.getUserId());
+                ReadVO readVO = TransVO.transReadVO(read,paper1,user1);
                 return ServerResponse.serverResponseBySuccess(readVO);
             }else {
                 return ServerResponse.serverResponseByFail("修改失败");
@@ -106,10 +140,18 @@ public class ReadServiceImpl implements IReadService {
     }
 
     @Override
-    public ServerResponse list(Integer paperId) {
+    public ServerResponse list(Integer paperId,Integer userId,Integer role) {
 
         if (paperId == null){
             return ServerResponse.serverResponseByFail(Const.CommonEnum.INPUT_NULL.getMsg());
+        }
+
+        User user = userDao.selectByKey(userId);
+        if (user == null){
+            return ServerResponse.serverResponseByFail("用户出错");
+        }
+        if (user.getRole() != role){
+            return ServerResponse.serverResponseByFail(Const.CommonEnum.NO_POWER.getMsg());
         }
 
         List<Read> readList = readDao.selectAllByPaperId(paperId);
@@ -121,7 +163,10 @@ public class ReadServiceImpl implements IReadService {
         List<ReadVO> readVOList = new ArrayList<>();
         for (Read read:readList
              ) {
-            readVOList.add(TransVO.transReadVO(read));
+            Paper paper = paperDao.selectByPaperId(read.getPaperId());
+            User user1 = userDao.selectByKey(read.getUserId());
+            ReadVO readVO = TransVO.transReadVO(read,paper,user1);
+            readVOList.add(readVO);
         }
 
         return ServerResponse.serverResponseBySuccess(readVOList);

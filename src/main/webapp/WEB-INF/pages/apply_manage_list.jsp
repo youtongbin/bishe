@@ -48,45 +48,49 @@
 <script type="text/javascript">
 
     $(function () {
-        $.ajax({
-            url:"power_manager/list.do",
-            type:"get",
-            contentType:"application/json",
-            success:function (result) {
-                /*console.log(result)*/
-                if (result.code == 0){
 
-                    var apply_list = result.data
-                    apply_list_view(apply_list)
+        init()
 
-                    $(".opt_true").click(function (e) {
-                        var applyId = $(e.target.attributes.getNamedItem("applyid"))[0].value
+        $("body").on("click",".opt_true",function (e) {
+            var applyId = $(e.target.attributes.getNamedItem("applyid"))[0].value
 
-                        var apply_status = $(this).parent().siblings(".apply_status")
+            var apply_status = $(this).parent().siblings(".apply_status")
 
-                        /*console.log(apply_status)*/
+            /*console.log(apply_status)*/
 
-                        if (confirm("确认授权？")){
-                            $.ajax({
-                                url:"user_manage/make_power.do",
-                                type:"get",
-                                contentType:"application/json",
-                                data:{"applyId":applyId},
-                                success:function (result) {
-                                    alert(result.msg)
-                                    if (result.code == 0){
-                                        apply_status.text("已通过")
-                                    }
-                                }
-                            })
+            if (confirm("确认授权？")){
+                $.ajax({
+                    url:"user_manage/make_power.do",
+                    type:"get",
+                    contentType:"application/json",
+                    data:{"applyId":applyId},
+                    success:function (result) {
+                        alert(result.msg)
+                        if (result.code == 0){
+                            apply_status.text("已通过")
                         }
-                    })
-
-                } else {
-                    alert(result.msg)
-                }
+                    }
+                })
             }
         })
+
+        function init(){
+            $.ajax({
+                url:"power_manager/list.do",
+                type:"get",
+                contentType:"application/json",
+                success:function (result) {
+                    /*console.log(result)*/
+                    if (result.code == 0){
+
+                        var apply_list = result.data
+                        apply_list_view(apply_list)
+                    } else {
+                        alert(result.msg)
+                    }
+                }
+            })
+        }
 
         function apply_list_view(apply_list) {
             var size = apply_list.length

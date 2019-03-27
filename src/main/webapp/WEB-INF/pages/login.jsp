@@ -149,7 +149,10 @@
 <script type="text/javascript" src="js/jquery.serializejson.min.js"></script>
 <script type="text/javascript">
     $(function () {
-        $("#xiao-submit-button").click(function () {
+
+        init()
+
+        $("body").on("click","#xiao-submit-button",function () {
             var loginInfo = $("#login_fm").serializeJSON()
 
             $.ajax({
@@ -166,6 +169,10 @@
                 }
             })
         })
+
+        function init() {
+
+        }
     })
 </script>
 

@@ -27,7 +27,7 @@ public class ReadController {
             return ServerResponse.serverResponseByFail(Const.CommonEnum.NEED_LOGIN.getMsg());
         }
 
-        return readService.list(paperId);
+        return readService.list(paperId,user.getUserId(),user.getRole());
     }
 
     @RequestMapping("/see.do")

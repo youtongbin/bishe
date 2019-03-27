@@ -62,41 +62,45 @@
 <script type="text/javascript" src="js/jquery.serializejson.min.js"></script>
 <script type="text/javascript">
     $(function () {
-        $.ajax({
-            url:"paper_manage/list.do",
-            type:"get",
-            contentType:"application/json",
-            success:function (result) {
-                if (result.code == 0){
-                    var paper_list = result.data
-                    paper_list_view(paper_list)
 
-                    $(".delete_btn").click(function (e) {
-                        if (confirm("确定删除？")){
-                            var paperId = $(e)[0].target.attributes.getNamedItem("paperid").value
-                            var userId = $(e)[0].target.attributes.getNamedItem("userid").value
-                            var tr = $(this).parent().parent().parent()
-                            $.ajax({
-                                url:"paper/delete.do",
-                                type:"get",
-                                contentType:"application/json",
-                                data:{"paperId":paperId,"userId":userId},
-                                success:function (result) {
-                                    console.log(result)
-                                    alert(result.msg)
-                                    if (result.code == 0){
-                                        tr.remove()
-                                    }
-                                }
-                            })
+        init()
+
+        $("body").on("click",".delete_btn",function (e) {
+            if (confirm("确定删除？")){
+                var paperId = $(e)[0].target.attributes.getNamedItem("paperid").value
+                var userId = $(e)[0].target.attributes.getNamedItem("userid").value
+                var tr = $(this).parent().parent().parent()
+                $.ajax({
+                    url:"paper/delete.do",
+                    type:"get",
+                    contentType:"application/json",
+                    data:{"paperId":paperId,"userId":userId},
+                    success:function (result) {
+                        console.log(result)
+                        alert(result.msg)
+                        if (result.code == 0){
+                            tr.remove()
                         }
-                    })
-
-                } else {
-                    alert(result.msg)
-                }
+                    }
+                })
             }
         })
+
+        function init() {
+            $.ajax({
+                url:"paper_manage/list.do",
+                type:"get",
+                contentType:"application/json",
+                success:function (result) {
+                    if (result.code == 0){
+                        var paper_list = result.data
+                        paper_list_view(paper_list)
+                    } else {
+                        alert(result.msg)
+                    }
+                }
+            })
+        }
 
         function paper_list_view(paper_list) {
             var table = $("#tb")[0]
@@ -121,6 +125,16 @@
                 username.setAttribute("value",paper_list[i].username)
                 paper_name.append(paper_list[i].paperName)
                 paper_status.append(paper_list[i].paperStatusDesc)
+                if (paper_list[i].paperStatus != 2){
+                    paper_status.setAttribute("class","paper_status")
+                    paper_status.setAttribute("paperId",paper_list[i].paperId)
+                }
+                if (paper_list[i].paperStatus == 0){
+                    paper_status.setAttribute("style","color:#0ed995")
+                }
+                if (paper_list[i].paperStatus == 1){
+                    paper_status.setAttribute("style","color:red")
+                }
                 var a = document.createElement("a")
                 a.setAttribute("href",paper_list[i].paperUrl)
                 paper_name.appendChild(a)

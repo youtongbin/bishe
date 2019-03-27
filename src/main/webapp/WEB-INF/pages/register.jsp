@@ -233,14 +233,16 @@
 
     $(function(){
 
-        $("#xiao-submit-button").click(function () {
+        init()
+
+        $("body").on("click","#xiao-submit-button",function () {
             var jsonObj = $("#register_fm").serializeJSON()
             var username_len = $("#username").val().toString().length
             var password = $("#password").val().toString()
             var rePassword = $("#userRePassword").val().toString()
             var phone = $("#phone").val().toString()
             var email = $("#email").val().toString()
-            
+
             if (username_len >= 6 && username_len <= 12){
                 if (password.length >= 6 && password.length <= 12){
                     if (password==rePassword){
@@ -276,6 +278,9 @@
 
         })
 
+        function init() {
+
+        }
     })
 
 </script>

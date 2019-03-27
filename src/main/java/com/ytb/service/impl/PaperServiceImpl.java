@@ -118,6 +118,16 @@ public class PaperServiceImpl implements IPaperService {
             return ServerResponse.serverResponseByFail("文件不能为空");
         }
 
+        //查找数据库
+        Paper paper = paperDao.selectByPaperId(paperId);
+        if (paper == null){
+            return ServerResponse.serverResponseByFail("论文不存在，请直接上传");
+        }
+
+        if (paper.getPaperStatus() != Const.PaperStatusEnum.UN_HANDLE.getCode()){
+            return ServerResponse.serverResponseByFail("该论文已经审核，不可修改");
+        }
+
         //1、获取文件名字
         String fileName = file.getOriginalFilename();
         //2、获取后缀扩展名
@@ -146,17 +156,6 @@ public class PaperServiceImpl implements IPaperService {
             if (FTPUtils.uploadFile(fileList)){
 
                 String fileUrl = PropertiesUtils.readByKey("fileHost") + "/" + newFileName;
-
-
-                //查找数据库
-                Paper paper = paperDao.selectByPaperId(paperId);
-                if (paper == null){
-                    return ServerResponse.serverResponseByFail("论文不存在，请直接上传");
-                }
-
-                if (paper.getPaperStatus() != Const.PaperStatusEnum.UN_HANDLE.getCode()){
-                    return ServerResponse.serverResponseByFail("该论文已经审核，不可修改");
-                }
 
                 //数据库添加--修改数据
                 paper.setIdentifyingName(newFileName);
